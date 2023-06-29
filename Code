@@ -1,0 +1,53 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract ErrorHandlersDemo {
+    address public owner;
+    uint256 public value;
+
+    constructor() {
+        owner = msg.sender;
+    }
+
+    function setValue(uint256 _value) public {
+        // Only the contract owner can set the value
+        require(msg.sender == owner, "Only the contract owner can set the value");
+
+        // The value must be positive
+        require(_value > 0, "Value must be greater than zero");
+
+        value = _value;
+    }
+
+    function getValue() public view returns (uint256) {
+        return value;
+    }
+
+    function transferOwnership(address newOwner) public {
+        // Only the contract owner can transfer ownership
+        require(msg.sender == owner, "Only the contract owner can transfer ownership");
+
+        // The new owner address must not be empty
+        require(newOwner != address(0), "Invalid address");
+
+        owner = newOwner;
+    }
+
+    function assertExample(uint256 a, uint256 b) public pure returns (uint256) {
+        // Assert that the input parameters are not equal
+        assert(a != b);
+
+        // Return the sum of the inputs
+        return a + b;
+    }
+
+    function revertExample(uint256 a, uint256 b) public pure returns (uint256) {
+        // Revert if the inputs are equal
+        if (a == b) {
+            revert("Inputs must be different");
+        }
+
+        // Return the product of the inputs
+        return a * b;
+    }
+}
